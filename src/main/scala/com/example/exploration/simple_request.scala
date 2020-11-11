@@ -1,15 +1,15 @@
-package com.example
+package com.example.exploration
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives
-import akka.http.scaladsl.server.Directives.{complete, path, _}
+import akka.http.scaladsl.server.Directives.{complete, path}
 
 import scala.io.StdIn
 
-object simple_request extends App{
+object simple_request extends App {
   implicit val system = ActorSystem(Behaviors.empty, "my-system")
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.executionContext

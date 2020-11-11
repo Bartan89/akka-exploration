@@ -1,16 +1,13 @@
-package com.example
+package com.example.exploration
 
 import akka.Done
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Directives.{as, complete, concat, entity, get, onSuccess, path, pathPrefix, post}
 import akka.http.scaladsl.server.Route
-// for JSON serialization/deserialization following dependency is required:
-// "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.7"
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import spray.json.DefaultJsonProtocol._
+import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 
 import scala.concurrent.Future
 import scala.io.StdIn
@@ -26,6 +23,7 @@ object jsonmarshalling {
 
   // domain model
   final case class Item(name: String, id: Long)
+
   final case class Order(items: List[Item])
 
   // formats for unmarshalling and marshalling
@@ -36,12 +34,15 @@ object jsonmarshalling {
   def fetchItem(itemId: Long): Future[Option[Item]] = Future {
     orders.find(o => o.id == itemId)
   }
+
   def saveOrder(order: Order): Future[Done] = {
     orders = order match {
       case Order(items) => items ::: orders
-      case _            => orders
+      case _ => orders
     }
-    Future { Done }
+    Future {
+      Done
+    }
   }
 
   def main(args: Array[String]): Unit = {
@@ -58,7 +59,7 @@ object jsonmarshalling {
               case Some(item) => {
                 complete(item)
               }
-              case None       => complete(StatusCodes.NotFound)
+              case None => complete(StatusCodes.NotFound)
             }
           }
         },
@@ -85,5 +86,3 @@ object jsonmarshalling {
   }
 
 }
-
-//DSL -> domain specific language

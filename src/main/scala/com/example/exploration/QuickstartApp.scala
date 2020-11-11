@@ -1,12 +1,12 @@
-package com.example
+package com.example.exploration
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+import com.example.{UserRegistry, UserRoutes}
 
-import scala.util.Failure
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 //#main-class
 object QuickstartApp {
@@ -25,6 +25,7 @@ object QuickstartApp {
         system.terminate()
     }
   }
+
   //#start-http-server
   def main(args: Array[String]): Unit = {
     //#server-bootstrapping
@@ -41,4 +42,3 @@ object QuickstartApp {
     //#server-bootstrapping
   }
 }
-//#main-class
